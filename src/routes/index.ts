@@ -1,10 +1,8 @@
 import express from 'express';
-import {exampleRoute} from '../controllers/example-controller';
-import healthController from '../controllers/health';
+import {getPostsController, addPostController} from '../controllers/post-controller';
 
 const router = express.Router();
-router.get('/example', exampleRoute);
-
-router.get('/health', healthController.healthCheck);
+router.get('/post', getPostsController);
+router.post('/post', addPostController);
 
 export default router;
