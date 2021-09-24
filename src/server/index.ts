@@ -16,6 +16,7 @@ const kafka = new Kafka({
   });
 
 export var posts:Array<string> = [] 
+export var notificaciones:Array<string> = [] 
 
 const consume = async () => {
     const consumer = kafka.consumer({ groupId: "test-group" });
@@ -23,11 +24,17 @@ const consume = async () => {
     await consumer.connect();
 
     await consumer.subscribe({ topic: "posts", fromBeginning: true });
+    await consumer.subscribe({ topic: "notificaciones", fromBeginning: true });
 
     await consumer.run({
         //@ts-ignore
         eachMessage: async ({ topic, partition, message }) => {
-            posts.push(JSON.parse(message.value.toString()))
+            const jsonMessage = JSON.parse(message.value.toString())
+            
+            jsonMessage.senderUsername?
+                notificaciones.push(jsonMessage)
+            : posts.push(jsonMessage)
+
             console.log("Mensaje pusheado a array. Mensaje: ", message.value.toString())
         },
     });
