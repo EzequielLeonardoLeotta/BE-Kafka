@@ -11,7 +11,7 @@ export const addPostsService = async (req: Request, res: Response) => {
             brokers: ["localhost:9092"],
           });
         
-        const producer = kafka.producer();
+        const producer = kafka.producer({allowAutoTopicCreation: true});
     
         await producer.connect();
     
